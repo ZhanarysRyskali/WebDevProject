@@ -10,7 +10,7 @@ This project is a simple and efficient expenditure and income tracker designed t
 - User-friendly interface for seamless tracking
 
 ## Team Members
-- **Ryskali Zhanagarys**
+- **Ryskali Zhangarys**
 - **Nuraliyev Miras**
 - **Moldabayeva Madina**
 
