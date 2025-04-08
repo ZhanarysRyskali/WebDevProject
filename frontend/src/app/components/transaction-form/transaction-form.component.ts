@@ -4,7 +4,7 @@ import { Transaction } from '../../models/transaction.model';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { Category } from '../../models/category';
 @Component({
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 export class TransactionFormComponent {
   transaction: Transaction = {
     type: 'income',
-    category: '',
+    category: {} as Category,
     amount: 0,
     date: '',
     description: ''
@@ -24,7 +24,7 @@ export class TransactionFormComponent {
   onSubmit() {
     this.ts.create(this.transaction).subscribe(() => {
       alert('Transaction added');
-      window.location.reload(); // for simplicity
+      window.location.reload(); 
     });
   }
 }

@@ -1,0 +1,58 @@
+/* dashboard.component.css */
+
+.dashboard {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  h1 {
+    text-align: center;
+    color: #4caf50;
+  }
+  
+  .transaction-form,
+  .transaction-list {
+    margin-bottom: 2rem;
+  }
+  
+  .transaction-form h2,
+  .transaction-list h2 {
+    color: #2196f3;
+  }
+  
+  hr {
+    margin: 1rem 0;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  button:hover {
+    background-color: #45a049;
+  }
+  
+  .transaction-list ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .transaction-list li {
+    margin: 0.5rem 0;
+    padding: 10px;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+  }
+  
+  .transaction-list button {
+    background-color: red;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+  
