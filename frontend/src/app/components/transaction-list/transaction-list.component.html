@@ -1,1 +1,7 @@
-<p>transaction-list works!</p>
+<div *ngIf="transactions.length === 0">No transactions yet.</div>
+<ul>
+  <li *ngFor="let t of transactions">
+    {{ t.date }} - {{ t.category }}: {{ t.amount }} ({{ t.type }})
+    <button (click)="deleteTransaction(t.id!)">Delete</button>
+  </li>
+</ul>

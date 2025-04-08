@@ -1,1 +1,12 @@
-<p>transaction-form works!</p>
+<form (ngSubmit)="onSubmit()">
+    <input [(ngModel)]="transaction.amount" name="amount" required placeholder="Amount">
+    <input [(ngModel)]="transaction.category" name="category" required placeholder="Category">
+    <input [(ngModel)]="transaction.date" name="date" required type="date">
+    <select [(ngModel)]="transaction.type" name="type">
+      <option value="income">Income</option>
+      <option value="expense">Expense</option>
+    </select>
+    <input [(ngModel)]="transaction.description" name="description" placeholder="Description">
+    <button type="submit">Add</button>
+  </form>
+  
