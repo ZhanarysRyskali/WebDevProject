@@ -1,6 +1,6 @@
 <ul *ngIf="transactions.length > 0; else noTransactions">
   <li *ngFor="let t of transactions">
-    {{ t.date }} | {{ t.type }} | {{ t.category }} | {{ t.amount }}₽ — {{ t.description }}
+    {{ t.date }} | {{ t.type }} | {{ t.category }} | {{ t.amount }}₸ — {{ t.description }}
   </li>
 </ul>
 
