@@ -1,4 +1,1 @@
-export interface Category {
-    id?: number;
-    name: string;
-}
+export type Category = 'Зарплата' | 'Подарок' | 'Еда' | 'Транспорт' | 'Развлечения' | 'Другое';

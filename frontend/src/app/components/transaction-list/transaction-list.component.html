@@ -1,7 +1,9 @@
-<div *ngIf="transactions.length === 0">No transactions yet.</div>
-<ul>
+<ul *ngIf="transactions.length > 0; else noTransactions">
   <li *ngFor="let t of transactions">
-    {{ t.date }} - {{ t.category }}: {{ t.amount }} ({{ t.type }})
-    <button (click)="deleteTransaction(t.id!)">Delete</button>
+    {{ t.date }} | {{ t.type }} | {{ t.category }} | {{ t.amount }}₽ — {{ t.description }}
   </li>
 </ul>
+
+<ng-template #noTransactions>
+  <p>Нет транзакций</p>
+</ng-template>

@@ -1,23 +1,47 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+// src/app/components/transaction-form/transaction-form.component.ts
+import { Component } from '@angular/core';
+import { TransactionService } from '../../services/transaction.service';
+import { Transaction } from '../../models/transaction.model';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
-import { TransactionFormComponent } from './transaction-form.component';
+@Component({
+  selector: 'app-transaction-form',
+  templateUrl: './transaction-form.component.html',
+  styleUrls: ['./transaction-form.component.css'],
+  imports: [CommonModule, FormsModule],
+})
+export class TransactionFormComponent {
+  transaction: Transaction = {
+    type: 'income',
+    category: 'Зарплата',
+    amount: 0,
+    date: '',
+    description: ''
+  };
 
-describe('TransactionFormComponent', () => {
-  let component: TransactionFormComponent;
-  let fixture: ComponentFixture<TransactionFormComponent>;
+  categories: string[] = ['Зарплата', 'Подарок', 'Еда', 'Транспорт', 'Развлечения', 'Другое'];
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TransactionFormComponent]
-    })
-    .compileComponents();
+  constructor(private ts: TransactionService) {}
 
-    fixture = TestBed.createComponent(TransactionFormComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  onSubmit() {
+    if (!this.transaction.date || this.transaction.amount <= 0) {
+      alert('❗ Пожалуйста, заполните корректно дату и сумму');
+      return;
+    }
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+    this.ts.create(this.transaction);
+    alert('✅ Транзакция добавлена!');
+    this.resetForm();
+  }
+
+  resetForm() {
+    this.transaction = {
+      type: 'income',
+      category: 'Зарплата',
+      amount: 0,
+      date: '',
+      description: ''
+    };
+  }
+}
