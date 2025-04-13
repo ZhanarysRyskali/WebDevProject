@@ -50,20 +50,36 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    margin-bottom: 15px;
 }
 
 button:hover {
     background-color: rgb(0, 86, 179);
 }
 
-.error-message {
-    margin-top: 20px;
+button:disabled {
+    opacity: 0.5;          
+    cursor: not-allowed;     
+}
+
+.field-error {
+    color: rgb(217, 83, 79);
+}
+
+.error-message,
+.success-message {
+    margin-top: 5px;
     text-align: center;
     font-weight: 500;
-    padding: 10px;
-    border-radius: 6px;
-    background-color: rgb(255, 229, 229);
+    padding: 5px;
+}
+  
+.error-message {
     color: rgb(217, 83, 79);
+}
+  
+.success-message {
+    color: rgb(40, 167, 69);
 }
 
 .register-link {

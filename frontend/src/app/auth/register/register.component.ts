@@ -1,62 +1,60 @@
 import { Component } from '@angular/core';
-import { AuthService } from '../auth.service';  // Сервис для аутентификации
-import { Router } from '@angular/router';  // Для маршрутизации
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';  // Для работы с формами
+import { AuthService } from '../auth.service';  
+import { Router } from '@angular/router'; 
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'; 
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
-  standalone: true,  // Для использования компонента без модуля
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],  // Модули, которые нужны
-  templateUrl: './register.component.html',  // Шаблон HTML
-  styleUrls: ['./register.component.css']  // Стили компонента
+  standalone: true, 
+  imports: [CommonModule, FormsModule, ReactiveFormsModule], 
+  templateUrl: './register.component.html', 
+  styleUrls: ['./register.component.css'] 
 })
 export class RegisterComponent {
-  registerForm: FormGroup;  // Форма регистрации
-  errorMessage: string = '';  // Сообщение об ошибке
-  successMessage: string = '';  // Сообщение об успешной регистрации
+  registerForm: FormGroup;  
+  errorMessage: string = ''; 
+  successMessage: string = '';  
 
   constructor(
-    private authService: AuthService,  // Сервис для аутентификации
-    private router: Router,  // Для маршрутизации
-    private fb: FormBuilder  // Для работы с формами
+    private authService: AuthService,  
+    private router: Router,  
+    private fb: FormBuilder  
   ) {
-    // Создание формы с валидацией
+
     this.registerForm = this.fb.group({
-      username: ['', Validators.required],  // Обязательно для заполнения
-      email: ['', [Validators.required, Validators.email]],  // Валидация email
-      password: ['', Validators.required],  // Пароль обязателен
-      confirmPassword: ['', Validators.required]  // Подтверждение пароля
+      username: ['', Validators.required],  
+      email: ['', [Validators.required, Validators.email]],  
+      password: ['', Validators.required],  
+      confirmPassword: ['', Validators.required] 
     });
   }
 
-  // Метод для регистрации
   register(): void {
+    this.registerForm.markAllAsTouched(); 
     if (this.registerForm.invalid) {
       this.errorMessage = 'Пожалуйста, заполните все поля корректно.';
       return;
     }
-
     const { username, email, password, confirmPassword } = this.registerForm.value;
-
-    // Проверка на совпадение паролей
     if (password !== confirmPassword) {
       this.errorMessage = 'Пароли не совпадают.';
       return;
     }
-
-    // Вызов метода для регистрации пользователя
+  
     this.authService.register(username, email, password).subscribe({
       next: (response) => {
-        this.successMessage = 'Регистрация успешна! Перенаправляем на страницу входа...';
-        setTimeout(() => {
-          this.router.navigate(['/login']);  // Перенаправление на страницу входа
-        }, 2000);  // Задержка 2 секунды
+        this.successMessage = 'Регистрация успешно выполнена!';
       },
       error: () => {
         this.errorMessage = 'Ошибка при регистрации. Попробуйте снова.';
       }
     });
   }
+  
+  resetForm(): void {
+    this.registerForm.reset();
+  }
+  
 }

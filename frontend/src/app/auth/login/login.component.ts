@@ -1,43 +1,56 @@
 import { Component } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../auth.service';
-import { FormsModule } from '@angular/forms';
+import { AuthService } from '../auth.service'; 
+import { Router } from '@angular/router'; 
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';  
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
-import { RegisterComponent } from '../register/register.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-login',
-  templateUrl: './login.component.html',
-  imports: [ FormsModule, CommonModule, RouterOutlet, RouterLink, RegisterComponent],
-  styleUrls: ['./login.component.css']
-
+  standalone: true,  
+  imports: [CommonModule, FormsModule, ReactiveFormsModule],  
+  templateUrl: './login.component.html', 
+  styleUrls: ['./login.component.css'] 
 })
 export class LoginComponent {
-  username: string = '';
-  password: string = '';
-  errorMessage: string = '';
+  loginForm: FormGroup;
+  errorMessage: string = '';  
+  successMessage: string = '';  
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,  
+    private router: Router, 
+    private fb: FormBuilder  
+  ) {
+
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
+    });
+  }
 
   login(): void {
-    if (!this.username || !this.password) {
-      this.errorMessage = 'Заполните все поля.';
+    if (this.loginForm.invalid) {
+      this.errorMessage = 'Пожалуйста, заполните все поля корректно.';
       return;
     }
 
-    this.authService.login(this.username, this.password).subscribe({
+    const { username, password } = this.loginForm.value;
+
+    this.authService.login(username, password).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/dashboard']);
+        this.successMessage = 'Вход успешно выполнен!';
       },
       error: () => {
         this.errorMessage = 'Неверное имя пользователя или пароль.';
       }
     });
   }
-
   navigateToRegister(): void {
     this.router.navigate(['/register']);  
+  }
+
+  resetForm(): void {
+    this.loginForm.reset();
   }
 }
