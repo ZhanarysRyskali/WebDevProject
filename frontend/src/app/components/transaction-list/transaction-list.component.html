@@ -1,5 +1,47 @@
-<ul *ngIf="transactions.length > 0; else noTransactions">
-  <li *ngFor="let t of transactions">
+<div class="filter-container">
+  <label>
+    Тип:
+    <select [(ngModel)]="filterType" (change)="applyFilters()">
+      <option value="">Все</option>
+      <option value="income">Доход</option>
+      <option value="expense">Расход</option>
+    </select>
+  </label>
+
+  <label>
+    Категория:
+    <select [(ngModel)]="filterCategory" (change)="applyFilters()">
+      <option value="">Все</option>
+      <option *ngFor="let cat of availableCategories" [value]="cat">{{ cat }}</option>
+    </select>
+  </label>
+
+  <label>
+    От:
+    <input type="date" [(ngModel)]="filterDateFrom" (change)="applyFilters()" />
+  </label>
+
+  <label>
+    До:
+    <input type="date" [(ngModel)]="filterDateTo" (change)="applyFilters()" />
+  </label>
+
+  <button (click)="clearFilters()">Сбросить фильтры</button>
+</div>
+
+<!-- Totals -->
+<div class="summary-container" *ngIf="filteredTransactions.length > 0">
+  <p *ngIf="filterType === 'income' || !filterType" class="income">
+    Доход: {{ totalIncome }}₸
+  </p>
+  <p *ngIf="filterType === 'expense' || !filterType" class="expense">
+    Расход: {{ totalExpense }}₸
+  </p>
+</div>
+
+<!-- Transaction List -->
+<ul *ngIf="filteredTransactions.length > 0; else noTransactions">
+  <li *ngFor="let t of filteredTransactions" class="transaction-item">
     {{ t.date }} | {{ t.type }} | {{ t.category }} | {{ t.amount }}₸ — {{ t.description }}
   </li>
 </ul>

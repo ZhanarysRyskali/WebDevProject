@@ -1,0 +1,95 @@
+/* General layout */
+:host {
+    display: block;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #fdfdfd;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Filter section */
+  .filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-container label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .filter-container select,
+  .filter-container input[type="date"] {
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+  }
+  
+  /* Buttons */
+  .filter-container button {
+    padding: 0.5rem 1.2rem;
+    background-color: #e63946;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .filter-container button:hover {
+    background-color: #d62839;
+  }
+  
+  /* Summary container */
+  .summary-container {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    gap: 2rem;
+  }
+  
+  .summary-container .income {
+    color: #2a9d8f;
+  }
+  
+  .summary-container .expense {
+    color: #e76f51;
+  }
+  
+  /* Transaction list */
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .transaction-item {
+    background-color: #f1f5f9;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.2s ease;
+  }
+  
+  .transaction-item:hover {
+    background-color: #e2e8f0;
+  }
+  
+  /* Empty state */
+  p {
+    color: #555;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: 1rem;
+  }
