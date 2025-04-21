@@ -12,6 +12,18 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
 })
 export class TransactionFormComponent {
+getTodayDate() {
+throw new Error('Method not implemented.');
+}
+onAmountBlur() {
+throw new Error('Method not implemented.');
+}
+onAmountFocus() {
+throw new Error('Method not implemented.');
+}
+onTypeChange() {
+throw new Error('Method not implemented.');
+}
   transaction: Transaction = {
     type: 'income',
     category: 'Зарплата',
