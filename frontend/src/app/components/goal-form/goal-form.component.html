@@ -1,0 +1,13 @@
+<form (ngSubmit)="addGoal()" #goalForm="ngForm" class="goal-form-container">
+    <label for="title">Название цели:</label>
+    <input [(ngModel)]="newGoal.title" name="title" id="title" type="text" required placeholder="Название цели">
+  
+    <label for="target_amount">Целевая сумма:</label>
+    <input [(ngModel)]="newGoal.target_amount" name="target_amount" id="target_amount" type="number" required placeholder="0">
+  
+    <label for="deadline">Дедлайн:</label>
+    <input [(ngModel)]="newGoal.deadline" name="deadline" id="deadline" type="date" required [min]="getTodayDate()">
+  
+    <button type="submit">Добавить цель</button>
+  </form>
+  

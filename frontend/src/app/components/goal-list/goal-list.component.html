@@ -1,0 +1,10 @@
+<ul *ngIf="goals.length > 0; else noGoals">
+    <li *ngFor="let goal of goals">
+        {{ goal.title }} - {{ goal.current_amount || 0 }}/{{ goal.target_amount }} 
+        <span *ngIf="goal.deadline">до {{ goal.deadline }}</span>
+    </li>
+</ul>
+  
+<ng-template #noGoals>
+    <p>Целей пока нет.</p>
+</ng-template>
