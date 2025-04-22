@@ -12,7 +12,6 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
     path('categories/', category_list, name='category-list'),
-    path('debts/', debt_list_create, name='debt-list-create'),
     path('transactions/', TransactionListCreate.as_view(), name='transaction-list-create'),
     path('goals/', GoalCRUD.as_view(), name='goal-crud'),
 ]

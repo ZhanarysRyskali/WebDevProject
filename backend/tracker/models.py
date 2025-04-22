@@ -71,13 +71,5 @@ class Transaction(models.Model):
     def __str__(self):
         return f"{self.transaction_type} - {self.amount} ({self.category})"
 
-class Debt(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    lender = models.CharField(max_length=100) 
-    amount = models.DecimalField(max_digits=10, decimal_places=2)  
-    due_date = models.DateField() 
-    is_paid = models.BooleanField(default=False) 
 
-    def __str__(self):
-        return f"{self.lender}: {self.amount}т. (до {self.due_date})"
 

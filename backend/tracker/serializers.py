@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Debt, Transaction, Goal
+from .models import Category, Transaction, Goal
 from .models import User
 
 class UserSerializer(serializers.ModelSerializer):
@@ -23,12 +23,6 @@ class CategorySerializerManual(serializers.Serializer):
     name = serializers.CharField(max_length=100)
 
 
-class DebtSerializerManual(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    lender = serializers.CharField(max_length=100)
-    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
-    due_date = serializers.DateField()
-    is_paid = serializers.BooleanField()
 
 class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
