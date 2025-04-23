@@ -5,9 +5,9 @@
       <div class="goal-header">
         <h3>{{ goal.title }}</h3>
         <div class="goal-actions">
-          <button (click)="startEdit(goal)" class="edit-btn">Edit</button>
+          <button (click)="startEdit(goal)" class="edit-btn">Изменить</button>
           <button (click)="deleteGoal(goal.id!)" class="delete-btn">
-            Delete
+            Удалить
           </button>
         </div>
       </div>
@@ -21,7 +21,7 @@
   </ul>
 
   <div *ngIf="goals.length === 0" class="no-goals">
-    <p>No goals found. Create your first goal to get started!</p>
+    <p>Цели не найдены. Создайте свою первую цель, чтобы начать!</p>
   </div>
 
   <div *ngIf="goals.length > 0" class="pagination">
@@ -30,7 +30,7 @@
       [disabled]="currentPage === 1"
       class="pagination-btn"
     >
-      Previous
+      Назад
     </button>
     <button
       *ngFor="let page of getPages()"
@@ -45,16 +45,16 @@
       [disabled]="currentPage === totalPages"
       class="pagination-btn"
     >
-      Next
+      Вперед
     </button>
   </div>
 
   <div *ngIf="editingGoal" class="edit-modal">
     <div class="modal-content">
-      <h3>Edit Goal</h3>
+      <h3>Изменить цель</h3>
       <form (ngSubmit)="saveEdit()">
         <div class="form-group">
-          <label for="title">Title</label>
+          <label for="title">Название</label>
           <input
             type="text"
             id="title"
@@ -64,7 +64,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="target_amount">Target Amount</label>
+          <label for="target_amount">Сумма</label>
           <input
             type="number"
             id="target_amount"
@@ -76,7 +76,7 @@
           />
         </div>
         <div class="form-group">
-          <label for="deadline">Deadline</label>
+          <label for="deadline">Дедлайн</label>
           <input
             type="date"
             id="deadline"
@@ -87,9 +87,9 @@
           />
         </div>
         <div class="modal-actions">
-          <button type="submit" class="save-btn">Save</button>
+          <button type="submit" class="save-btn">Сохранить</button>
           <button type="button" (click)="cancelEdit()" class="cancel-btn">
-            Cancel
+            Отмена
           </button>
         </div>
       </form>
