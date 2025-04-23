@@ -1,59 +1,23 @@
-// src/app/components/transaction-form/transaction-form.component.ts
-import { Component } from '@angular/core';
-import { TransactionService } from '../../services/transaction.service';
-import { Transaction } from '../../models/transaction.model';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-@Component({
-  selector: 'app-transaction-form',
-  templateUrl: './transaction-form.component.html',
-  styleUrls: ['./transaction-form.component.css'],
-  imports: [CommonModule, FormsModule],
-})
-export class TransactionFormComponent {
-getTodayDate() {
-throw new Error('Method not implemented.');
-}
-onAmountBlur() {
-throw new Error('Method not implemented.');
-}
-onAmountFocus() {
-throw new Error('Method not implemented.');
-}
-onTypeChange() {
-throw new Error('Method not implemented.');
-}
-  transaction: Transaction = {
-    type: 'income',
-    category: 'Зарплата',
-    amount: 0,
-    date: '',
-    description: ''
-  };
+import { TransactionFormComponent } from './transaction-form.component';
 
-  categories: string[] = ['Зарплата', 'Подарок', 'Еда', 'Транспорт', 'Развлечения', 'Другое'];
+describe('GoalFormComponent', () => {
+  let component: TransactionFormComponent;
+  let fixture: ComponentFixture<TransactionFormComponent>;
 
-  constructor(private ts: TransactionService) {}
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [TransactionFormComponent]
+    })
+    .compileComponents();
 
-  onSubmit() {
-    if (!this.transaction.date || this.transaction.amount <= 0) {
-      alert('❗ Пожалуйста, заполните корректно дату и сумму');
-      return;
-    }
+    fixture = TestBed.createComponent(TransactionFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
 
-    this.ts.create(this.transaction);
-    alert('✅ Транзакция добавлена!');
-    this.resetForm();
-  }
-
-  resetForm() {
-    this.transaction = {
-      type: 'income',
-      category: 'Зарплата',
-      amount: 0,
-      date: '',
-      description: ''
-    };
-  }
-}
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

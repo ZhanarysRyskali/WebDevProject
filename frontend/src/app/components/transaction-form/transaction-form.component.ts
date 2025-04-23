@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class TransactionFormComponent {
   transaction: Transaction = {
-    type: 'income',
+    transaction_type: 'income',
     category: 'Зарплата',
     amount: 0,
     date: this.getTodayDate(),
@@ -26,7 +26,7 @@ export class TransactionFormComponent {
 
   onAmountFocus() {
     if (this.transaction.amount === 0) {
-      this.transaction.amount = null as any; // Clear field visually
+      this.transaction.amount = null as any; 
     }
   }
   
@@ -42,41 +42,45 @@ export class TransactionFormComponent {
   expenseCategories: string[] = ['Еда', 'Транспорт', 'Развлечения', 'Другое'];
 
   constructor(private ts: TransactionService) {
-    this.updateCategories();  // Initialize categories based on the initial type
+    this.updateCategories(); 
   }
 
-  // Method to update categories based on the selected type
   onTypeChange(): void {
     this.updateCategories();
   }
 
   private updateCategories(): void {
-    if (this.transaction.type === 'income') {
+    if (this.transaction.transaction_type === 'income') {
       this.categories = this.incomeCategories;
     } else {
       this.categories = this.expenseCategories;
     }
   }
 
-  onSubmit() {
+  addTransaction() {
+    
+    alert('onSubmit called')
+    console.log('onSubmit called');
     if (!this.transaction.date || this.transaction.amount <= 0) {
       alert('❗ Пожалуйста, заполните корректно дату и сумму');
       return;
     }
-
-    this.ts.create(this.transaction);
-    alert('✅ Транзакция добавлена!');
-    this.resetForm();
+    
+    this.ts.create(this.transaction).subscribe((transaction: Transaction) => {
+      console.log(this.transaction);
+      this.resetForm();  
+      alert('Transaction added successfully');
+    });
   }
 
   resetForm() {
     this.transaction = {
-      type: 'income',
+      transaction_type: 'income',
       category: 'Зарплата',
       amount: 0,
       date: this.getTodayDate(),
       description: ''
     };
-    this.updateCategories();  // Reset categories when the form is reset
+    this.updateCategories();  
   }
 }

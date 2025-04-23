@@ -42,7 +42,7 @@
 <!-- Transaction List -->
 <ul *ngIf="filteredTransactions.length > 0; else noTransactions">
   <li *ngFor="let t of filteredTransactions" class="transaction-item">
-    {{ t.date }} | {{ t.type }} | {{ t.category }} | {{ t.amount }}₸ — {{ t.description }}
+    {{ t.date }} | {{ t.transaction_type }} | {{ t.category }} | {{ t.amount }}₸ — {{ t.description }}
   </li>
 </ul>
 

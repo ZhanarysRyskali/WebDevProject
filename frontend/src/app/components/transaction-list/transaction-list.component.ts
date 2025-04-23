@@ -28,8 +28,9 @@ export class TransactionListComponent implements OnInit {
   constructor(private ts: TransactionService) {}
 
   ngOnInit(): void {
-    this.ts.getTransactions().subscribe(data => {
+    this.ts.getTransactions().subscribe((data: Transaction[]) => {
       this.transactions = data;
+      console.log(this.transactions);
       this.applyFilters();
     });
   }
@@ -41,7 +42,7 @@ export class TransactionListComponent implements OnInit {
 
   applyFilters() {
     this.filteredTransactions = this.transactions.filter(t => {
-      const matchesType = !this.filterType || t.type === this.filterType;
+      const matchesType = !this.filterType || t.transaction_type === this.filterType;
       const matchesCategory = !this.filterCategory || t.category === this.filterCategory;
       const matchesDateFrom = !this.filterDateFrom || new Date(t.date) >= new Date(this.filterDateFrom);
       const matchesDateTo = !this.filterDateTo || new Date(t.date) <= new Date(this.filterDateTo);
@@ -50,11 +51,11 @@ export class TransactionListComponent implements OnInit {
   
     // Calculate totals
     this.totalIncome = this.filteredTransactions
-      .filter(t => t.type === 'income')
+      .filter(t => t.transaction_type === 'income')
       .reduce((sum, t) => sum + t.amount, 0);
   
     this.totalExpense = this.filteredTransactions
-      .filter(t => t.type === 'expense')
+      .filter(t => t.transaction_type === 'expense')
       .reduce((sum, t) => sum + t.amount, 0);
   }
 

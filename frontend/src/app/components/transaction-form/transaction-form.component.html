@@ -1,6 +1,6 @@
-<form (ngSubmit)="onSubmit()" #form="ngForm" class="form-container">
+<form  #form="ngForm" class="form-container">
   <label for="type">Тип:</label>
-  <select [(ngModel)]="transaction.type" name="type" id="type" required (change)="onTypeChange()">
+  <select [(ngModel)]="transaction.transaction_type" name="type" id="type" required (change)="onTypeChange()">
     <option value="income">Доход</option>
     <option value="expense">Расход</option>
   </select>
@@ -16,7 +16,7 @@
   [(ngModel)]="transaction.amount"
   name="amount"
   id="amount"
-  type="number"
+  transaction_type="number"
   required
   [value]="transaction.amount === 0 ? '' : transaction.amount"
   (focus)="onAmountFocus()"
@@ -30,5 +30,6 @@
   <label for="description">Описание:</label>
   <input [(ngModel)]="transaction.description" name="description" id="description" placeholder="Комментарий (необязательно)">
 
-  <button type="submit">Добавить транзакцию</button>
+  <!-- <button type="submit">Добавить транзакцию</button> -->
+  <button (click)="addTransaction">Добавить транзакцию</button>
 </form>
