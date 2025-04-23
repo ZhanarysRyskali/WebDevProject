@@ -1,35 +1,56 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private token: string | null = null;
-  logout() {
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
-  }
-  setToken(token: string, refresh: string) {
-    localStorage.setItem('access', token);
-    localStorage.setItem('refresh', refresh);
-  }
-  getToken(): string | null {
-    return localStorage.getItem('access_token'); 
-  }
   private api = 'http://localhost:8000/tracker';
-
-  private accessToken$ = new BehaviorSubject<string | null>(null);
+  private accessToken$ = new BehaviorSubject<string | null>(this.getStoredAccessToken());
+  private refreshToken$ = new BehaviorSubject<string | null>(this.getStoredRefreshToken());
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, password: string) {
+  private getStoredAccessToken(): string | null {
+    return localStorage.getItem('access');
+  }
+
+  private getStoredRefreshToken(): string | null {
+    return localStorage.getItem('refresh');
+  }
+
+  getToken(): string | null {
+    return this.getStoredAccessToken();
+  }
+
+  getAccessToken(): string | null {
+    return this.getStoredAccessToken();
+  }
+
+  setToken(access: string, refresh: string): void {
+    localStorage.setItem('access', access);
+    localStorage.setItem('refresh', refresh);
+    this.accessToken$.next(access);
+    this.refreshToken$.next(refresh);
+  }
+
+  clearTokens(): void {
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    this.accessToken$.next(null);
+    this.refreshToken$.next(null);
+  }
+
+  isAuthenticated(): boolean {
+    return !!this.getStoredAccessToken();
+  }
+
+  login(email: string, password: string): Observable<{ access: string; refresh: string }> {
     return this.http.post<{ access: string; refresh: string }>(`${this.api}/api/token/`, {
       email, password
     }).pipe(
       tap(res => {
-        localStorage.setItem('access', res.access);
-        localStorage.setItem('refresh', res.refresh);
-        this.accessToken$.next(res.access);
+        this.setToken(res.access, res.refresh);
       })
     );
   }
@@ -38,16 +59,27 @@ export class AuthService {
     return this.http.post(`${this.api}/api/register/`, { email, password });
   }
 
-  refreshToken() {
-    const refresh = localStorage.getItem('refresh');
-    return this.http.post<{ access: string }>(`${this.api}/api/token/refresh/`, { refresh })
-      .pipe(tap(res => {
+  refreshToken(): Observable<{ access: string }> {
+    const refresh = this.getStoredRefreshToken();
+    if (!refresh) {
+      return throwError(() => new Error('No refresh token available'));
+    }
+
+    return this.http.post<{ access: string }>(`${this.api}/api/token/refresh/`, {
+      refresh: refresh
+    }).pipe(
+      tap(res => {
         localStorage.setItem('access', res.access);
         this.accessToken$.next(res.access);
-      }));
+      }),
+      catchError(error => {
+        this.clearTokens();
+        return throwError(() => error);
+      })
+    );
   }
 
-  getAccessToken() {
-    return localStorage.getItem('access');
+  logout(): void {
+    this.clearTokens();
   }
 }

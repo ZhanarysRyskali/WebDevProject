@@ -12,7 +12,9 @@
     Категория:
     <select [(ngModel)]="filterCategory" (change)="applyFilters()">
       <option value="">Все</option>
-      <option *ngFor="let cat of availableCategories" [value]="cat">{{ cat }}</option>
+      <option *ngFor="let cat of availableCategories" [value]="cat">
+        {{ cat }}
+      </option>
     </select>
   </label>
 
@@ -29,23 +31,83 @@
   <button (click)="clearFilters()">Сбросить фильтры</button>
 </div>
 
-<!-- Totals -->
-<div class="summary-container" *ngIf="filteredTransactions.length > 0">
+<!-- Overall Totals -->
+<div class="summary-container">
+  <p class="income">Общий доход: {{ overallIncome | amount }}₸</p>
+  <p class="expense">Общий расход: {{ overallExpense | amount }}₸</p>
+</div>
+
+<!-- Filtered Totals -->
+<div
+  class="summary-container"
+  *ngIf="
+    filteredTransactions.length > 0 &&
+    (filterType || filterCategory || filterDateFrom || filterDateTo)
+  "
+>
   <p *ngIf="filterType === 'income' || !filterType" class="income">
-    Доход: {{ totalIncome }}₸
+    Отфильтрованный доход: {{ totalIncome | amount }}₸
   </p>
   <p *ngIf="filterType === 'expense' || !filterType" class="expense">
-    Расход: {{ totalExpense }}₸
+    Отфильтрованный расход: {{ totalExpense | amount }}₸
   </p>
 </div>
 
 <!-- Transaction List -->
-<ul *ngIf="filteredTransactions.length > 0; else noTransactions">
-  <li *ngFor="let t of filteredTransactions" class="transaction-item">
-    {{ t.date }} | {{ t.transaction_type }} | {{ t.category }} | {{ t.amount }}₸ — {{ t.description }}
+<ul
+  *ngIf="filteredTransactions.length > 0; else noTransactions"
+  class="transaction-list"
+>
+  <li *ngFor="let t of displayedTransactions" class="transaction-item">
+    {{ t.date | date : "short" }} |
+    {{ t.transaction_type === "income" ? "Доход" : "Расход" }} |
+    {{ t.category }} |
+    <span
+      [class.income]="t.transaction_type === 'income'"
+      [class.expense]="t.transaction_type === 'expense'"
+    >
+      {{ t.amount | amount }}₸
+    </span>
+    <span *ngIf="t.description"> — {{ t.description }}</span>
   </li>
 </ul>
 
+<!-- Pagination -->
+<div class="pagination" *ngIf="totalPages > 1">
+  <button
+    type="button"
+    class="pagination-button"
+    [disabled]="currentPage === 1"
+    (click)="previousPage()"
+  >
+    ←
+  </button>
+
+  <ng-container *ngFor="let page of pages">
+    <ng-container *ngIf="page === -1">
+      <span class="pagination-ellipsis">...</span>
+    </ng-container>
+    <button
+      *ngIf="page !== -1"
+      type="button"
+      class="pagination-button"
+      [class.active]="page === currentPage"
+      (click)="goToPage(page)"
+    >
+      {{ page }}
+    </button>
+  </ng-container>
+
+  <button
+    type="button"
+    class="pagination-button"
+    [disabled]="currentPage === totalPages"
+    (click)="nextPage()"
+  >
+    →
+  </button>
+</div>
+
 <ng-template #noTransactions>
-  <p>Нет транзакций</p>
+  <p class="no-transactions">Нет транзакций</p>
 </ng-template>

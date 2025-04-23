@@ -1,14 +1,16 @@
-from rest_framework.views import APIView
-from rest_framework.decorators import api_view, permission_classes
-from .models import Transaction, Goal, Category
-from .serializers import TransactionSerializer, GoalSerializer, CategorySerializerManual
-from rest_framework.permissions import IsAuthenticated
+import datetime
+
+import jwt
 from rest_framework import status
-from rest_framework.response import Response
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.exceptions import AuthenticationFailed
-from .serializers import UserSerializer
-from .models import User
-import jwt, datetime
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import Category, Goal, Transaction, User
+from .serializers import (CategorySerializerManual, GoalSerializer,
+                          TransactionSerializer, UserSerializer)
 
 
 class TransactionListCreate(APIView):
@@ -42,6 +44,30 @@ class GoalCRUD(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, pk):
+        try:
+            goal = Goal.objects.get(id=pk, user=request.user)
+            goal.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Goal.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+    def get_goal(self, pk):
+        goal = Goal.objects.get(id=pk)
+        return goal
+
+    def put(self, request, pk):
+        try:
+            goal = Goal.objects.get(id=pk, user=request.user)
+            serializer = GoalSerializer(goal, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Goal.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def category_list(request):
@@ -50,9 +76,7 @@ def category_list(request):
     return Response(serializer.data)
 
 
-
-
-
+            
 class RegisterView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)

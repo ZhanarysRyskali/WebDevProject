@@ -1,16 +1,20 @@
-import { Component } from '@angular/core';
-import { TransactionService } from '../../services/transaction.service';
-import { Transaction } from '../../models/transaction.model';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Category } from '../../models/category';
+import { Transaction } from '../../models/transaction.model';
+import { TransactionService } from '../../services/transaction.service';
 
 @Component({
   selector: 'app-transaction-form',
   templateUrl: './transaction-form.component.html',
   styleUrls: ['./transaction-form.component.css'],
+  standalone: true,
   imports: [CommonModule, FormsModule],
 })
 export class TransactionFormComponent {
+  @Output() transactionAdded = new EventEmitter<void>();
+
   transaction: Transaction = {
     transaction_type: 'income',
     category: 'Зарплата',
@@ -26,7 +30,7 @@ export class TransactionFormComponent {
 
   onAmountFocus() {
     if (this.transaction.amount === 0) {
-      this.transaction.amount = null as any; 
+      this.transaction.amount = null as any;
     }
   }
   
@@ -36,17 +40,18 @@ export class TransactionFormComponent {
     }
   }
 
-  categories: string[] = [];
+  categories: Category[] = [];
 
-  incomeCategories: string[] = ['Зарплата', 'Подарок', 'Другое'];
-  expenseCategories: string[] = ['Еда', 'Транспорт', 'Развлечения', 'Другое'];
+  incomeCategories: Category[] = ['Зарплата', 'Подарок', 'Другое'];
+  expenseCategories: Category[] = ['Еда', 'Транспорт', 'Развлечения', 'Другое'];
 
   constructor(private ts: TransactionService) {
-    this.updateCategories(); 
+    this.updateCategories();
   }
 
   onTypeChange(): void {
     this.updateCategories();
+    this.transaction.category = this.categories[0];
   }
 
   private updateCategories(): void {
@@ -57,19 +62,30 @@ export class TransactionFormComponent {
     }
   }
 
+  private parseAmount(amount: number | string): number {
+    if (typeof amount === 'string') {
+      return parseFloat(amount) || 0;
+    }
+    return amount || 0;
+  }
+
   addTransaction() {
-    
-    alert('onSubmit called')
-    console.log('onSubmit called');
-    if (!this.transaction.date || this.transaction.amount <= 0) {
+    const amountValue = this.parseAmount(this.transaction.amount);
+    if (!this.transaction.date || amountValue <= 0) {
       alert('❗ Пожалуйста, заполните корректно дату и сумму');
       return;
     }
     
-    this.ts.create(this.transaction).subscribe((transaction: Transaction) => {
-      console.log(this.transaction);
-      this.resetForm();  
-      alert('Transaction added successfully');
+    this.ts.create(this.transaction).subscribe({
+      next: (transaction: Transaction) => {
+        console.log('Transaction created:', transaction);
+        this.resetForm();
+        this.transactionAdded.emit();
+      },
+      error: (error) => {
+        console.error('Error adding transaction:', error);
+        alert('Произошла ошибка при добавлении транзакции');
+      }
     });
   }
 
@@ -81,6 +97,6 @@ export class TransactionFormComponent {
       date: this.getTodayDate(),
       description: ''
     };
-    this.updateCategories();  
+    this.updateCategories();
   }
 }

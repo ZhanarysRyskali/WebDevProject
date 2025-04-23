@@ -1,5 +1,7 @@
 from django.urls import path
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework_simplejwt.views import (TokenObtainPairView,
+                                            TokenRefreshView)
+
 from .views import *
 
 urlpatterns = [
@@ -14,4 +16,6 @@ urlpatterns = [
     path('categories/', category_list, name='category-list'),
     path('transactions/', TransactionListCreate.as_view(), name='transaction-list-create'),
     path('goals/', GoalCRUD.as_view(), name='goal-crud'),
+    path('goals/<int:pk>/', GoalCRUD.as_view(), name='goal-crud'),
+
 ]

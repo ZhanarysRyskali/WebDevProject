@@ -1,10 +1,98 @@
-<ul *ngIf="goals.length > 0; else noGoals">
-    <li *ngFor="let goal of goals">
-        {{ goal.title }} - {{ goal.current_amount || 0 }}/{{ goal.target_amount }} 
-        <span *ngIf="goal.deadline">до {{ goal.deadline }}</span>
+<!-- Goals List -->
+<div class="goals-list-container">
+  <ul class="goals-list">
+    <li *ngFor="let goal of paginatedGoals" class="goal-item">
+      <div class="goal-header">
+        <h3>{{ goal.title }}</h3>
+        <div class="goal-actions">
+          <button (click)="startEdit(goal)" class="edit-btn">Edit</button>
+          <button (click)="deleteGoal(goal.id!)" class="delete-btn">
+            Delete
+          </button>
+        </div>
+      </div>
+      <div class="goal-progress">
+        <div class="amount-info">
+          <span>{{ goal.target_amount  }}₸</span>
+        </div>
+      </div>
+      <div class="goal-deadline">Deadline: {{ goal.deadline | date }}</div>
     </li>
-</ul>
-  
-<ng-template #noGoals>
-    <p>Целей пока нет.</p>
-</ng-template>
+  </ul>
+
+  <div *ngIf="goals.length === 0" class="no-goals">
+    <p>No goals found. Create your first goal to get started!</p>
+  </div>
+
+  <div *ngIf="goals.length > 0" class="pagination">
+    <button
+      (click)="changePage(currentPage - 1)"
+      [disabled]="currentPage === 1"
+      class="pagination-btn"
+    >
+      Previous
+    </button>
+    <button
+      *ngFor="let page of getPages()"
+      (click)="changePage(page)"
+      [class.active]="page === currentPage"
+      class="pagination-btn"
+    >
+      {{ page }}
+    </button>
+    <button
+      (click)="changePage(currentPage + 1)"
+      [disabled]="currentPage === totalPages"
+      class="pagination-btn"
+    >
+      Next
+    </button>
+  </div>
+
+  <div *ngIf="editingGoal" class="edit-modal">
+    <div class="modal-content">
+      <h3>Edit Goal</h3>
+      <form (ngSubmit)="saveEdit()">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            [(ngModel)]="editingGoal.title"
+            name="title"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="target_amount">Target Amount</label>
+          <input
+            type="number"
+            id="target_amount"
+            [(ngModel)]="editingGoal.target_amount"
+            name="target_amount"
+            min="0"
+            step="0.01"
+            required
+          />
+        </div>
+        <div class="form-group">
+          <label for="deadline">Deadline</label>
+          <input
+            type="date"
+            id="deadline"
+            [(ngModel)]="editingGoal.deadline"
+            name="deadline"
+            [min]="getTodayDate()"
+            required
+          />
+        </div>
+        <div class="modal-actions">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" (click)="cancelEdit()" class="cancel-btn">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

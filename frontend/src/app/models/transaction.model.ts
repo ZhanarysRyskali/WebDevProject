@@ -4,7 +4,7 @@ export interface Transaction {
     id?: number;
     transaction_type: 'income' | 'expense';
     category: Category;
-    amount: number;
+    amount: number | string;
     date: string;
     description: string;
   }

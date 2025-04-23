@@ -1,14 +1,13 @@
 <div class="home-container">
-    <h1>Мои цели</h1>
-  
-    <section class="form-section">
-      <h2>➕ Добавить цель</h2>
-      <app-goal-form></app-goal-form>
-    </section>
-  
-    <section class="list-section">
-      <h2>📋 Список целей</h2>
-      <app-goal-list></app-goal-list>
-    </section>
+  <h1>Мои цели</h1>
+
+  <section class="form-section">
+    <h2>➕ Добавить цель</h2>
+    <app-goal-form (goalAdded)="onGoalAdded()"></app-goal-form>
+  </section>
+
+  <section class="list-section">
+    <h2>📋 Список целей</h2>
+    <app-goal-list></app-goal-list>
+  </section>
 </div>
-  
