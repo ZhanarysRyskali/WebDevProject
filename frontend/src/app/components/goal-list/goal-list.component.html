@@ -16,7 +16,7 @@
           <span>{{ goal.target_amount  }}₸</span>
         </div>
       </div>
-      <div class="goal-deadline">Deadline: {{ goal.deadline | date }}</div>
+      <div class="goal-deadline">Дедлайн: {{ goal.deadline | date : "dd.MM.yyyy" }}</div>
     </li>
   </ul>
 
