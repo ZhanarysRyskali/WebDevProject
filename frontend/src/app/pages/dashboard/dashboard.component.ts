@@ -13,6 +13,10 @@ import { Router } from '@angular/router';
 export class DashboardComponent {
   constructor(private auth: AuthService, private router: Router) {}
 
+  onToGoals() {
+    this.router.navigate(['/goals']);
+  }
+
   onLogout() {
     this.auth.logout();             
     this.router.navigate(['/login']); 
