@@ -37,7 +37,6 @@ export class TransactionService {
     }).pipe(
       catchError((error) => {
         if (error.status === 401) {
-          // Try to refresh the token
           return this.handleUnauthorized(() => this.loadTransactions());
         }
         return throwError(() => error);
@@ -112,5 +111,13 @@ export class TransactionService {
     }
     console.error(errorMessage);
     return throwError(() => new Error(errorMessage));
+  }
+
+  updateTransaction(id: number, transaction: Transaction): Observable<Transaction> {
+    return this.http.put<Transaction>(`${this.apiUrl}${id}/`, transaction);
+  }
+
+  deleteTransaction(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
 }

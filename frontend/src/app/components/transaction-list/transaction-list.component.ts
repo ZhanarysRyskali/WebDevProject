@@ -20,7 +20,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   displayedTransactions: Transaction[] = [];
   private subscription: Subscription = new Subscription();
 
-  // Pagination
+
   currentPage: number = 1;
   pageSize: number = 5;
   totalPages: number = 1;
@@ -30,11 +30,10 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   filterDateFrom: string = '';
   filterDateTo: string = '';
   
-  // Filtered totals
+
   totalIncome: number = 0;
   totalExpense: number = 0;
-  
-  // Overall totals
+
   overallIncome: number = 0;
   overallExpense: number = 0;
 
@@ -103,7 +102,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
   
     console.log('Filtered transactions:', this.filteredTransactions);
     
-    // Calculate filtered totals
+
     this.totalIncome = this.filteredTransactions
       .filter(t => t.transaction_type === 'income')
       .reduce((sum, t) => sum + this.parseAmount(t.amount), 0);
@@ -112,9 +111,9 @@ export class TransactionListComponent implements OnInit, OnDestroy {
       .filter(t => t.transaction_type === 'expense')
       .reduce((sum, t) => sum + this.parseAmount(t.amount), 0);
 
-    // Update pagination
+
     this.totalPages = Math.ceil(this.filteredTransactions.length / this.pageSize);
-    this.currentPage = 1; // Reset to first page when filters change
+    this.currentPage = 1; 
     this.updateDisplayedTransactions();
   }
 
@@ -126,7 +125,7 @@ export class TransactionListComponent implements OnInit, OnDestroy {
     this.applyFilters();
   }
 
-  // Pagination methods
+ 
   updateDisplayedTransactions() {
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
@@ -161,23 +160,23 @@ export class TransactionListComponent implements OnInit, OnDestroy {
     const currentPage = this.currentPage;
     const totalPages = this.totalPages;
 
-    // Always include first page
+
     pages.push(1);
 
     if (currentPage > 3) {
-      pages.push(-1); // Represents ellipsis
+      pages.push(-1);
     }
 
-    // Add pages around current page
+
     for (let i = Math.max(2, currentPage - 1); i <= Math.min(totalPages - 1, currentPage + 1); i++) {
       pages.push(i);
     }
 
     if (currentPage < totalPages - 2) {
-      pages.push(-1); // Represents ellipsis
+      pages.push(-1); 
     }
 
-    // Always include last page
+
     if (totalPages > 1) {
       pages.push(totalPages);
     }

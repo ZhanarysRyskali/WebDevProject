@@ -22,13 +22,13 @@ class TransactionListCreate(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        print("Received transaction data:", request.data)  # Debug log
+        print("Received transaction data:", request.data)  
         serializer = TransactionSerializer(data=request.data)
         if serializer.is_valid():
-            print("Serializer is valid, saving transaction")  # Debug log
+            print("Serializer is valid, saving transaction")  
             serializer.save(user=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        print("Serializer errors:", serializer.errors)  # Debug log
+        print("Serializer errors:", serializer.errors)  
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

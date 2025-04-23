@@ -31,13 +31,13 @@
   <button (click)="clearFilters()">Сбросить фильтры</button>
 </div>
 
-<!-- Overall Totals -->
+
 <div class="summary-container">
   <p class="income">Общий доход: {{ overallIncome | amount }}₸</p>
   <p class="expense">Общий расход: {{ overallExpense | amount }}₸</p>
 </div>
 
-<!-- Filtered Totals -->
+
 <div
   class="summary-container"
   *ngIf="
@@ -53,7 +53,7 @@
   </p>
 </div>
 
-<!-- Transaction List -->
+
 <ul
   *ngIf="filteredTransactions.length > 0; else noTransactions"
   class="transaction-list"
@@ -72,7 +72,7 @@
   </li>
 </ul>
 
-<!-- Pagination -->
+
 <div class="pagination" *ngIf="totalPages > 1">
   <button
     type="button"

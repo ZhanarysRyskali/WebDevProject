@@ -16,7 +16,6 @@ export class AmountPipe implements PipeTransform {
     }
     
     const formatted = numValue.toFixed(2);
-    // Only remove leading zeros if the number is not zero itself
     return numValue === 0 ? formatted : formatted.replace(/^0+/, '');
   }
 } 
