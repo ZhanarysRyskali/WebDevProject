@@ -25,10 +25,12 @@ class CategorySerializerManual(serializers.Serializer):
 
 
 class TransactionSerializer(serializers.ModelSerializer):
+    date = serializers.DateField(format='%Y-%m-%d', input_formats=['%Y-%m-%d'])
+    
     class Meta:
         model = Transaction
         fields = '__all__'
-        read_only_fields = ['user', 'date']
+        read_only_fields = ['user']
 
 class GoalSerializer(serializers.ModelSerializer):
     class Meta:
