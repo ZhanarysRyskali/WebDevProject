@@ -10,13 +10,18 @@ import { CommonModule } from '@angular/common';
   templateUrl: './goal-list.component.html',
   styleUrl: './goal-list.component.css'
 })
+
 export class GoalListComponent implements OnInit {
   goals: Goal[] = [];
 
   constructor(private goalService: GoalService) {}
 
   ngOnInit(): void {
-    this.goalService.getGoals().subscribe(data => {
+    this.loadGoals();
+  }
+
+  loadGoals(): void {
+    this.goalService.getGoals().subscribe((data: Goal[]) => {
       this.goals = data;
     });
   }

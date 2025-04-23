@@ -11,30 +11,25 @@ import { GoalListComponent } from '../goal-list/goal-list.component';
   templateUrl: './goal-form.component.html',
   styleUrl: './goal-form.component.css'
 })
-export class GoalFormComponent{
-  goals: Goal[] = [];
+
+export class GoalFormComponent {
   newGoal: Goal = {
     title: '',
     target_amount: 0,
     deadline: null,
   };
-  showForm = false;
-  showGoalList: boolean = false;
 
   constructor(private goalService: GoalService) {}
 
-  addGoal() {
-    this.goalService.createGoal(this.newGoal).subscribe((goal) => {
-      this.goals.push(goal);
-      this.newGoal = { title: '', target_amount: 0, deadline: null };
-      this.showForm = false;
+  addGoal(): void {
+    this.goalService.createGoal(this.newGoal).subscribe((goal: Goal) => {
+      this.newGoal = { title: '', target_amount: 0, deadline: null }; 
+      alert('Goal added successfully');
     });
   }
+
   getTodayDate(): string {
     const today = new Date();
-    return today.toISOString().split('T')[0];
-  }
-  seeGoal() {
-    this.showGoalList = true;
+    return today.toISOString().split('T')[0]; 
   }
 }
