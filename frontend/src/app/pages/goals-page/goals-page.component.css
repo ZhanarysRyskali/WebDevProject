@@ -21,4 +21,19 @@
     border: 1px solid #ddd;
     border-radius: 8px;
 }
+
+.goals-container {
+    display: flex;
+    justify-content: right;
+    position: fixed;
+    bottom: 20px;
+    right: 40px;
+    width: 100%;
+  }
+
+button {
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+}
   
